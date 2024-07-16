@@ -1,30 +1,61 @@
-import { useState } from 'react';
 import './App.css';
+import React, {useState} from 'react';
 
-function CounterButton(props) {
-	const changeCounter = () => {
-		props.onCounterClick(props.valueIncrement)
-	}
+// function Button(props) {
+//   const btnClickHandler = () => {
+//     props.onBtnClick(props.bgColor, props.fgColor);
+//   }
+//   return(
+//     <button className="Button" style={{ backgroundColor: props.bgColor, color: props.fgColor, height: "30px"}} onClick={btnClickHandler}>{props.text}</button>
+//   );
+// }
 
-	return (
-		<button onClick={changeCounter}>{props.text}</button>
-	)
+class Button extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const btnClickHandler = () => {
+      this.props.onBtnClick(this.props.bgColor, this.props.fgColor);
+    }
+    return (
+      <button className="Button" style={{ backgroundColor: this.props.bgColor, color: this.props.fgColor, height: "30px"}} onClick={btnClickHandler}>{this.props.text}</button>
+    );
+  }
+}
+
+class ColorChanger extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      bgColor: "red",
+      fgColor: "green"
+    };
+  }
+
+  render() {
+    const stateFunc = (newBGColor, newFGColor)=>{
+      this.setState({ bgColor: newBGColor, fgColor: newFGColor });
+    }
+
+    return (
+      <>
+      <Button bgColor="red" fgColor="green" text="Red" onBtnClick={stateFunc}></Button>
+      <Button bgColor="green" fgColor="red" text="Green" onBtnClick={stateFunc}></Button>
+      <Button bgColor="yellow" fgColor="blue" text="Yellow" onBtnClick={stateFunc}></Button>
+      <div className="DisplayBlock" style={{ backgroundColor: this.state.bgColor, color: this.state.fgColor }}>Some dummy text block</div>
+      </>
+    )
+  }
 }
 
 function App() {
-	const [counter, setCounter] = useState(0);
-	const stateFunction = (value) => {
-		setCounter(parseInt(counter) + value);
-	}
-
-  	return (
-    	<>
-		<CounterButton text="+10" valueIncrement={10} onCounterClick={stateFunction}></CounterButton>
-		<CounterButton text="-100" valueIncrement={-100} onCounterClick={stateFunction}></CounterButton>
-		<CounterButton text="+25" valueIncrement={25} onCounterClick={stateFunction}></CounterButton>
-		<h1>{counter}</h1>
-    	</>
-  	);
+  return (
+    <>
+    <ColorChanger></ColorChanger>
+    </>
+  );
 }
 
 export default App;
